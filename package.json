@@ -30,7 +30,7 @@
   "author": "MapConductor",
   "license": "Apache2",
   "dependencies": {
-    "@mapconductor/js-sdk-core": "workspace:*"
+    "@mapconductor/js-sdk-core": "0.1.0"
   },
   "devDependencies": {
     "tsup": "^8.5.1",
