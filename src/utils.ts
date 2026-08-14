@@ -1,5 +1,44 @@
 import type { BitmapIcon } from '@mapconductor/js-sdk-core';
 
+const BITMAP_ICON_CACHE_MAX_ENTRIES = 512;
+
+class LruCache<K, V> {
+  private readonly entries = new Map<K, V>();
+
+  constructor(private readonly maxEntries: number) {}
+
+  get(key: K): V | undefined {
+    const value = this.entries.get(key);
+    if (value === undefined) return undefined;
+
+    this.entries.delete(key);
+    this.entries.set(key, value);
+    return value;
+  }
+
+  set(key: K, value: V): void {
+    this.entries.delete(key);
+    this.entries.set(key, value);
+
+    while (this.entries.size > this.maxEntries) {
+      const oldestKey = this.entries.keys().next().value;
+      if (oldestKey === undefined) break;
+      this.entries.delete(oldestKey);
+    }
+  }
+}
+
+const bitmapIconCache = new LruCache<number, BitmapIcon>(BITMAP_ICON_CACHE_MAX_ENTRIES);
+
+export const getOrCreateBitmapIcon = (key: number, create: () => BitmapIcon): BitmapIcon => {
+  const cached = bitmapIconCache.get(key);
+  if (cached !== undefined) return cached;
+
+  const bitmapIcon = create();
+  bitmapIconCache.set(key, bitmapIcon);
+  return bitmapIcon;
+};
+
 export interface IconSize {
   width: number;
   height: number;

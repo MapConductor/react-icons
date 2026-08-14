@@ -1,5 +1,5 @@
 import { AbstractMarkerIcon, Settings, type BitmapIcon, type Offset } from '@mapconductor/js-sdk-core';
-import { debugRect, hashObject, normalizeColor, svgBitmapIcon, type IconSize } from './utils';
+import { debugRect, hashObject, normalizeColor, svgBitmapIcon, getOrCreateBitmapIcon, type IconSize } from './utils';
 
 export interface CircleIconOptions {
   strokeColor?: string;
@@ -54,17 +54,19 @@ export class CircleIcon extends AbstractMarkerIcon {
   }
 
   toBitmapIcon(): BitmapIcon {
-    const size = Math.max(1, Math.round(this.iconSize * this.scale));
-    const strokeWidth = Math.max(0, this.strokeWidth);
-    const radius = Math.max(0, size / 2 - strokeWidth);
-    const parts = [
-      `<svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}" viewBox="0 0 ${size} ${size}">`,
-      `<circle cx="${size / 2}" cy="${size / 2}" r="${radius}" fill="${this.fillColor}"/>`,
-      `<circle cx="${size / 2}" cy="${size / 2}" r="${radius}" fill="none" stroke="${this.strokeColor}" stroke-width="${strokeWidth}"/>`,
-      this.debug ? debugRect(size, size) : '',
-      '</svg>',
-    ];
-    return svgBitmapIcon({ svg: parts.join(''), anchor: this.anchor, size: this.size(size, size) });
+    return getOrCreateBitmapIcon(this.hashCode(), () => {
+      const size = Math.max(1, Math.round(this.iconSize * this.scale));
+      const strokeWidth = Math.max(0, this.strokeWidth);
+      const radius = Math.max(0, size / 2 - strokeWidth);
+      const parts = [
+        `<svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}" viewBox="0 0 ${size} ${size}">`,
+        `<circle cx="${size / 2}" cy="${size / 2}" r="${radius}" fill="${this.fillColor}"/>`,
+        `<circle cx="${size / 2}" cy="${size / 2}" r="${radius}" fill="none" stroke="${this.strokeColor}" stroke-width="${strokeWidth}"/>`,
+        this.debug ? debugRect(size, size) : '',
+        '</svg>',
+      ];
+      return svgBitmapIcon({ svg: parts.join(''), anchor: this.anchor, size: this.size(size, size) });
+    });
   }
 
   hashCode(): number {

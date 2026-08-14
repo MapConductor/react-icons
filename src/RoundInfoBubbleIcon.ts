@@ -1,5 +1,5 @@
 import { AbstractMarkerIcon, MarkerIconSize, type BitmapIcon, type Offset } from '@mapconductor/js-sdk-core';
-import { debugRect, escapeXml, hashObject, normalizeColor, svgBitmapIcon, type IconSize } from './utils';
+import { debugRect, escapeXml, hashObject, normalizeColor, svgBitmapIcon, getOrCreateBitmapIcon, type IconSize } from './utils';
 
 export interface RoundInfoBubbleIconOptions {
   fillColor?: string;
@@ -52,31 +52,33 @@ export class RoundInfoBubbleIcon extends AbstractMarkerIcon {
   }
 
   toBitmapIcon(): BitmapIcon {
-    const drawableSize = Math.max(1, this.iconSize * this.scale);
-    const innerPadding = drawableSize * 0.1;
-    const textSize = drawableSize * 0.5;
-    const textWidth = estimateTextWidth(this.label, textSize);
-    const textHeight = textSize * 1.2;
-    const canvasWidth = Math.ceil(drawableSize + innerPadding + textWidth + innerPadding * 3);
-    const canvasHeight = Math.ceil(Math.max(drawableSize, textHeight) + innerPadding * 2);
-    const pointerHeight = canvasHeight / 8;
-    const totalHeight = Math.ceil(canvasHeight + pointerHeight);
-    const radius = canvasHeight / 2;
-    const pointerHalfWidth = pointerHeight;
-    const textX = innerPadding + drawableSize + innerPadding;
-    const textY = innerPadding + drawableSize / 2;
-    const parts = [
-      `<svg xmlns="http://www.w3.org/2000/svg" width="${canvasWidth}" height="${totalHeight}" viewBox="0 0 ${canvasWidth} ${totalHeight}">`,
-      `<path d="${roundedBubblePath(canvasWidth, canvasHeight, radius, pointerHalfWidth, pointerHeight)}" fill="${this.fillColor}"/>`,
-      `<image href="${escapeXml(this.iconUrl)}" x="${innerPadding}" y="${innerPadding}" width="${drawableSize}" height="${drawableSize}" preserveAspectRatio="xMidYMid meet"/>`,
-      `<text x="${textX}" y="${textY}" dominant-baseline="middle" font-family="sans-serif" font-size="${textSize}" fill="#000000">${escapeXml(this.label)}</text>`,
-      this.debug ? debugRect(canvasWidth, totalHeight) : '',
-      '</svg>',
-    ];
-    return svgBitmapIcon({
-      svg: parts.join(''),
-      anchor: this.anchor,
-      size: this.size(canvasWidth, totalHeight),
+    return getOrCreateBitmapIcon(this.hashCode(), () => {
+      const drawableSize = Math.max(1, this.iconSize * this.scale);
+      const innerPadding = drawableSize * 0.1;
+      const textSize = drawableSize * 0.5;
+      const textWidth = estimateTextWidth(this.label, textSize);
+      const textHeight = textSize * 1.2;
+      const canvasWidth = Math.ceil(drawableSize + innerPadding + textWidth + innerPadding * 3);
+      const canvasHeight = Math.ceil(Math.max(drawableSize, textHeight) + innerPadding * 2);
+      const pointerHeight = canvasHeight / 8;
+      const totalHeight = Math.ceil(canvasHeight + pointerHeight);
+      const radius = canvasHeight / 2;
+      const pointerHalfWidth = pointerHeight;
+      const textX = innerPadding + drawableSize + innerPadding;
+      const textY = innerPadding + drawableSize / 2;
+      const parts = [
+        `<svg xmlns="http://www.w3.org/2000/svg" width="${canvasWidth}" height="${totalHeight}" viewBox="0 0 ${canvasWidth} ${totalHeight}">`,
+        `<path d="${roundedBubblePath(canvasWidth, canvasHeight, radius, pointerHalfWidth, pointerHeight)}" fill="${this.fillColor}"/>`,
+        `<image href="${escapeXml(this.iconUrl)}" x="${innerPadding}" y="${innerPadding}" width="${drawableSize}" height="${drawableSize}" preserveAspectRatio="xMidYMid meet"/>`,
+        `<text x="${textX}" y="${textY}" dominant-baseline="middle" font-family="sans-serif" font-size="${textSize}" fill="#000000">${escapeXml(this.label)}</text>`,
+        this.debug ? debugRect(canvasWidth, totalHeight) : '',
+        '</svg>',
+      ];
+      return svgBitmapIcon({
+        svg: parts.join(''),
+        anchor: this.anchor,
+        size: this.size(canvasWidth, totalHeight),
+      });
     });
   }
 

@@ -1,5 +1,5 @@
 import { AbstractMarkerIcon, MarkerIconSize, type BitmapIcon, type Offset } from '@mapconductor/js-sdk-core';
-import { debugRect, escapeXml, hashObject, normalizeColor, svgBitmapIcon, type IconSize } from './utils';
+import { debugRect, escapeXml, hashObject, normalizeColor, svgBitmapIcon, getOrCreateBitmapIcon, type IconSize } from './utils';
 
 export interface RightTailInfoBubbleIconOptions {
   fillColor?: string;
@@ -60,35 +60,37 @@ export class RightTailInfoBubbleIcon extends AbstractMarkerIcon {
   }
 
   toBitmapIcon(): BitmapIcon {
-    const drawableSize = Math.max(1, this.iconSize * this.scale);
-    const drawableInnerPadding = drawableSize * 0.1;
-    const contentMargin = drawableSize * 0.2;
-    const labelTextSize = drawableSize * 0.7;
-    const snippetTextSize = drawableSize * 0.4;
-    const labelWidth = estimateTextWidth(this.label, labelTextSize);
-    const labelHeight = labelTextSize * 1.2;
-    const snippetHeight = snippetTextSize * 1.2;
-    const canvasWidth = Math.ceil(drawableSize + drawableInnerPadding + labelWidth + contentMargin * 2);
-    const canvasHeight = Math.ceil(Math.max(drawableSize, labelHeight) + drawableInnerPadding + snippetHeight + drawableInnerPadding * 2);
-    const pointerWidth = canvasWidth / 9;
-    const pointerHeight = canvasHeight / 8;
-    const totalHeight = Math.ceil(canvasHeight + pointerHeight);
-    const labelX = contentMargin + drawableSize + drawableInnerPadding;
-    const labelY = contentMargin + drawableSize / 2;
-    const snippetY = canvasHeight - contentMargin;
-    const parts = [
-      `<svg xmlns="http://www.w3.org/2000/svg" width="${canvasWidth}" height="${totalHeight}" viewBox="0 0 ${canvasWidth} ${totalHeight}">`,
-      `<path d="${rightTailBubblePath(canvasWidth, canvasHeight, pointerWidth, pointerHeight)}" fill="${this.fillColor}"/>`,
-      `<image href="${escapeXml(this.iconUrl)}" x="${contentMargin}" y="${contentMargin}" width="${drawableSize - drawableInnerPadding}" height="${drawableSize - drawableInnerPadding}" preserveAspectRatio="xMidYMid meet"/>`,
-      `<text x="${labelX}" y="${labelY}" dominant-baseline="middle" font-family="sans-serif" font-size="${labelTextSize}" fill="${this.labelTextColor}">${escapeXml(this.label)}</text>`,
-      `<text x="${contentMargin}" y="${snippetY}" dominant-baseline="alphabetic" font-family="sans-serif" font-size="${snippetTextSize}" fill="#808080">${escapeXml(this.snippet)}</text>`,
-      this.debug ? debugRect(canvasWidth, totalHeight) : '',
-      '</svg>',
-    ];
-    return svgBitmapIcon({
-      svg: parts.join(''),
-      anchor: this.anchor,
-      size: this.size(canvasWidth, totalHeight),
+    return getOrCreateBitmapIcon(this.hashCode(), () => {
+      const drawableSize = Math.max(1, this.iconSize * this.scale);
+      const drawableInnerPadding = drawableSize * 0.1;
+      const contentMargin = drawableSize * 0.2;
+      const labelTextSize = drawableSize * 0.7;
+      const snippetTextSize = drawableSize * 0.4;
+      const labelWidth = estimateTextWidth(this.label, labelTextSize);
+      const labelHeight = labelTextSize * 1.2;
+      const snippetHeight = snippetTextSize * 1.2;
+      const canvasWidth = Math.ceil(drawableSize + drawableInnerPadding + labelWidth + contentMargin * 2);
+      const canvasHeight = Math.ceil(Math.max(drawableSize, labelHeight) + drawableInnerPadding + snippetHeight + drawableInnerPadding * 2);
+      const pointerWidth = canvasWidth / 9;
+      const pointerHeight = canvasHeight / 8;
+      const totalHeight = Math.ceil(canvasHeight + pointerHeight);
+      const labelX = contentMargin + drawableSize + drawableInnerPadding;
+      const labelY = contentMargin + drawableSize / 2;
+      const snippetY = canvasHeight - contentMargin;
+      const parts = [
+        `<svg xmlns="http://www.w3.org/2000/svg" width="${canvasWidth}" height="${totalHeight}" viewBox="0 0 ${canvasWidth} ${totalHeight}">`,
+        `<path d="${rightTailBubblePath(canvasWidth, canvasHeight, pointerWidth, pointerHeight)}" fill="${this.fillColor}"/>`,
+        `<image href="${escapeXml(this.iconUrl)}" x="${contentMargin}" y="${contentMargin}" width="${drawableSize - drawableInnerPadding}" height="${drawableSize - drawableInnerPadding}" preserveAspectRatio="xMidYMid meet"/>`,
+        `<text x="${labelX}" y="${labelY}" dominant-baseline="middle" font-family="sans-serif" font-size="${labelTextSize}" fill="${this.labelTextColor}">${escapeXml(this.label)}</text>`,
+        `<text x="${contentMargin}" y="${snippetY}" dominant-baseline="alphabetic" font-family="sans-serif" font-size="${snippetTextSize}" fill="#808080">${escapeXml(this.snippet)}</text>`,
+        this.debug ? debugRect(canvasWidth, totalHeight) : '',
+        '</svg>',
+      ];
+      return svgBitmapIcon({
+        svg: parts.join(''),
+        anchor: this.anchor,
+        size: this.size(canvasWidth, totalHeight),
+      });
     });
   }
 
