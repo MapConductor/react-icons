@@ -97,4 +97,49 @@ declare class RightTailInfoBubbleIcon extends AbstractMarkerIcon {
     private size;
 }
 
-export { CircleIcon, type CircleIconOptions, FlagIcon, type FlagIconOptions, RightTailInfoBubbleIcon, type RightTailInfoBubbleIconOptions, RoundInfoBubbleIcon, type RoundInfoBubbleIconOptions };
+/** A single-color map symbol in a normalized SVG view box. */
+interface MapIconGlyph {
+    readonly id: string;
+    readonly pathData: string;
+    readonly viewBoxSize: number;
+}
+
+/** Map symbols from the common pack. Selection is always explicit. */
+declare const CommonMapIcons: {
+    /** Hospital or medical facility. */
+    readonly hospital: {
+        readonly id: "hospital";
+        readonly pathData: "M9 3 L15 3 L15 9 L21 9 L21 15 L15 15 L15 21 L9 21 L9 15 L3 15 L3 9 L9 9 Z";
+        readonly viewBoxSize: 24;
+    };
+};
+
+interface PinGlyphIconOptions {
+    fillColor?: string;
+    glyphColor?: string;
+    strokeColor?: string;
+    strokeWidth?: number;
+    scale?: number;
+    infoAnchor?: Offset;
+    iconSize?: number;
+    debug?: boolean;
+}
+/** Displays a MapIconGlyph in MapConductor's default pin container. */
+declare class PinGlyphIcon extends AbstractMarkerIcon {
+    readonly anchor: Offset;
+    readonly glyph: MapIconGlyph;
+    readonly fillColor: string;
+    readonly glyphColor: string;
+    readonly strokeColor: string;
+    readonly strokeWidth: number;
+    readonly scale: number;
+    readonly infoAnchor: Offset;
+    readonly iconSize: number;
+    readonly debug: boolean;
+    constructor(glyph: MapIconGlyph, options?: PinGlyphIconOptions);
+    copy(glyph?: MapIconGlyph, options?: PinGlyphIconOptions): PinGlyphIcon;
+    toBitmapIcon(): BitmapIcon;
+    hashCode(): number;
+}
+
+export { CircleIcon, type CircleIconOptions, CommonMapIcons, FlagIcon, type FlagIconOptions, type MapIconGlyph, PinGlyphIcon, type PinGlyphIconOptions, RightTailInfoBubbleIcon, type RightTailInfoBubbleIconOptions, RoundInfoBubbleIcon, type RoundInfoBubbleIconOptions };

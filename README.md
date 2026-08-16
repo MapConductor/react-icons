@@ -1,36 +1,62 @@
-# @mapconductor/react-icons
+# MapConductor Icons for React
 
-Marker icon utilities for MapConductor React SDK.
+Map-ready React icon containers and region-neutral glyphs. Use them for application-owned markers such as a hospital symbol inside a pin, circle, flag, or information bubble.
 
-This package is the React/TypeScript port of `android-icons`.
+Locale never changes an icon automatically. Choose a regional pack explicitly when local conventions matter.
 
-Map glyphs are selected explicitly; the package never substitutes a symbol from
-the browser locale.
+## Installation
+
+Install the current stable package:
+
+```sh
+npm install @mapconductor/react-icons
+```
+
+The glyph API documented below is on branch `0.2.0-2` until the next npm release. To try it from source:
+
+```sh
+git clone --branch 0.2.0-2 https://github.com/MapConductor/react-icons.git
+cd react-icons
+npm install
+npm run build
+```
+
+Then install that local directory in your application with `npm install /path/to/react-icons`.
+
+## Quick start
 
 ```ts
-import { CommonMapIcons, PinGlyphIcon } from '@mapconductor/react-icons';
+import {
+  CommonMapIcons,
+  PinGlyphIcon,
+} from '@mapconductor/react-icons';
 
-const hospital = new PinGlyphIcon(CommonMapIcons.hospital, {
-  fillColor: '#0067c0',
+const hospitalMarker = new PinGlyphIcon(CommonMapIcons.hospital, {
+  fillColor: '#e53935',
   glyphColor: '#ffffff',
 });
+
+const bitmapIcon = hospitalMarker.toBitmapIcon();
 ```
 
-Region-specific glyphs are distributed as separate packages such as
-`@mapconductor/react-icons-jp` and use the same containers.
+The package also provides `CircleIcon`, `FlagIcon`, `RoundInfoBubbleIcon`, and `RightTailInfoBubbleIcon` for their existing image and label use cases. Rendered bitmap icons use a bounded LRU cache.
 
-```ts
-import { CircleIcon, FlagIcon } from '@mapconductor/react-icons';
+## Regional packs
 
-const circle = new CircleIcon('#ef4444');
-const flag = new FlagIcon('#2563eb');
-```
+- [Japan](https://github.com/MapConductor/react-icons-jp)
+- [United States](https://github.com/MapConductor/react-icons-us)
+- [Weather](https://github.com/MapConductor/react-icons-weather)
 
-The info-bubble icons accept an image URL where Android accepts a `Drawable`.
+## Contributing icons
 
-```ts
-import { RoundInfoBubbleIcon, RightTailInfoBubbleIcon } from '@mapconductor/react-icons';
+Cross-platform artwork and generated API definitions live in the Android source repository. Stable IDs and shapes remain identical across Android, iOS, and React.
 
-const round = new RoundInfoBubbleIcon('/marker.svg', '$197');
-const rightTail = new RightTailInfoBubbleIcon('/marker.svg', '5時間37分', '304マイル');
-```
+<!-- BEGIN GENERATED ICON CATALOG -->
+## Included glyphs
+
+Glyph IDs are stable across Android, iOS, and React.
+
+| Preview | API | Stable ID | Description |
+|---|---|---|---|
+| <img src="docs/icons/hospital.svg" width="40" height="40" alt="Hospital or medical facility"> | `CommonMapIcons.hospital` | `hospital` | Hospital or medical facility |
+<!-- END GENERATED ICON CATALOG -->
