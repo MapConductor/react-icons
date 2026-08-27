@@ -39,7 +39,7 @@ const hospitalMarker = new PinGlyphIcon(CommonMapIcons.hospital, {
 const bitmapIcon = hospitalMarker.toBitmapIcon();
 ```
 
-The package also provides `CircleIcon`, `FlagIcon`, `RoundInfoBubbleIcon`, and `RightTailInfoBubbleIcon` for their existing image and label use cases. Rendered bitmap icons use a bounded LRU cache.
+The package also provides `TeardropPinIcon`, `RoundedSquarePinIcon`, `ThumbnailPinIcon`, `CircleIcon`, `FlagIcon`, `RoundInfoBubbleIcon`, and `RightTailInfoBubbleIcon` for their existing shape, image, and label use cases. `ThumbnailPinIcon` frames a caller-supplied photo and `PhotoCardPinIcon` puts one on a card with a title and a subtitle; pass either a `data:` URL, since SVG rendered as an image cannot fetch external resources. Rendered bitmap icons use a bounded LRU cache.
 
 ## Regional packs
 

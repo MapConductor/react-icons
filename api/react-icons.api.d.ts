@@ -142,4 +142,139 @@ declare class PinGlyphIcon extends AbstractMarkerIcon {
     hashCode(): number;
 }
 
-export { CircleIcon, type CircleIconOptions, CommonMapIcons, FlagIcon, type FlagIconOptions, type MapIconGlyph, PinGlyphIcon, type PinGlyphIconOptions, RightTailInfoBubbleIcon, type RightTailInfoBubbleIconOptions, RoundInfoBubbleIcon, type RoundInfoBubbleIconOptions };
+interface TeardropPinIconOptions {
+    holeColor?: string;
+    strokeColor?: string;
+    strokeWidth?: number;
+    scale?: number;
+    iconSize?: number;
+    debug?: boolean;
+}
+/** A round head tapering to a point, anchored at the tip. */
+declare class TeardropPinIcon extends AbstractMarkerIcon {
+    readonly anchor: Offset;
+    readonly infoAnchor: Offset;
+    private readonly properties;
+    constructor(fillColor?: string, options?: TeardropPinIconOptions);
+    get fillColor(): string;
+    get holeColor(): string;
+    get strokeColor(): string;
+    get strokeWidth(): number;
+    get scale(): number;
+    get iconSize(): number;
+    get debug(): boolean;
+    copy(fillColor?: string, options?: TeardropPinIconOptions): TeardropPinIcon;
+    toBitmapIcon(): BitmapIcon;
+    hashCode(): number;
+    private size;
+}
+
+interface RoundedSquarePinIconOptions {
+    holeColor?: string;
+    strokeColor?: string;
+    strokeWidth?: number;
+    scale?: number;
+    iconSize?: number;
+    debug?: boolean;
+}
+/** A rounded square whose bottom corners run into a tail, anchored at the tip. */
+declare class RoundedSquarePinIcon extends AbstractMarkerIcon {
+    readonly anchor: Offset;
+    readonly infoAnchor: Offset;
+    private readonly properties;
+    constructor(fillColor?: string, options?: RoundedSquarePinIconOptions);
+    get fillColor(): string;
+    get holeColor(): string;
+    get strokeColor(): string;
+    get strokeWidth(): number;
+    get scale(): number;
+    get iconSize(): number;
+    get debug(): boolean;
+    copy(fillColor?: string, options?: RoundedSquarePinIconOptions): RoundedSquarePinIcon;
+    toBitmapIcon(): BitmapIcon;
+    hashCode(): number;
+    private size;
+}
+
+interface ThumbnailPinIconOptions {
+    frameColor?: string;
+    placeholderColor?: string;
+    shadow?: boolean;
+    scale?: number;
+    iconSize?: number;
+    debug?: boolean;
+}
+/**
+ * A framed thumbnail on a rounded square with a tail, anchored at the tip.
+ *
+ * `imageUrl` fills the inner rounded square, cropped to fill without distortion.
+ * SVG rendered through an `<img>` cannot fetch external resources, so pass a
+ * `data:` URL — rasterize a remote photo to one first, the same way
+ * `RoundInfoBubbleIcon` is used. Until an image is supplied the frame shows
+ * `placeholderColor`.
+ */
+declare class ThumbnailPinIcon extends AbstractMarkerIcon {
+    readonly anchor: Offset;
+    readonly infoAnchor: Offset;
+    private readonly properties;
+    constructor(imageUrl?: string, options?: ThumbnailPinIconOptions);
+    get imageUrl(): string;
+    get frameColor(): string;
+    get placeholderColor(): string;
+    get shadow(): boolean;
+    get scale(): number;
+    get iconSize(): number;
+    get debug(): boolean;
+    copy(imageUrl?: string, options?: ThumbnailPinIconOptions): ThumbnailPinIcon;
+    toBitmapIcon(): BitmapIcon;
+    hashCode(): number;
+    private layout;
+    private size;
+}
+
+interface PhotoCardPinIconOptions {
+    cardColor?: string;
+    titleColor?: string;
+    subtitleColor?: string;
+    placeholderColor?: string;
+    shadow?: boolean;
+    scale?: number;
+    iconSize?: number;
+    debug?: boolean;
+}
+/**
+ * A photo card with a title and a subtitle, anchored at the tip of its tail.
+ *
+ * `imageUrl` fills the photo band, cropped to fill without distortion. SVG
+ * rendered through an `<img>` cannot fetch external resources, so pass a `data:`
+ * URL — rasterize a remote photo to one first, the same way `RoundInfoBubbleIcon`
+ * is used. Without an image the band shows `placeholderColor`.
+ *
+ * `iconSize` is the card's height and defaults to the sheet's own 107 rather than
+ * `Settings.Default.iconSize`: the card carries text, which is unreadable once
+ * the whole card is scaled down to a plain marker's size.
+ */
+declare class PhotoCardPinIcon extends AbstractMarkerIcon {
+    readonly anchor: Offset;
+    readonly infoAnchor: Offset;
+    private readonly properties;
+    constructor(imageUrl?: string, title?: string, subtitle?: string, options?: PhotoCardPinIconOptions);
+    get imageUrl(): string;
+    get title(): string;
+    get subtitle(): string;
+    get cardColor(): string;
+    get titleColor(): string;
+    get subtitleColor(): string;
+    get placeholderColor(): string;
+    get shadow(): boolean;
+    get scale(): number;
+    get iconSize(): number;
+    get debug(): boolean;
+    copy(imageUrl?: string, title?: string, subtitle?: string, options?: PhotoCardPinIconOptions): PhotoCardPinIcon;
+    toBitmapIcon(): BitmapIcon;
+    hashCode(): number;
+    private layout;
+    private size;
+}
+
+export { CircleIcon, type CircleIconOptions, CommonMapIcons, FlagIcon, type FlagIconOptions, type MapIconGlyph, PhotoCardPinIcon, type PhotoCardPinIconOptions, PinGlyphIcon, type PinGlyphIconOptions, RightTailInfoBubbleIcon, type RightTailInfoBubbleIconOptions, RoundInfoBubbleIcon, type RoundInfoBubbleIconOptions, RoundedSquarePinIcon, type RoundedSquarePinIconOptions, TeardropPinIcon, type TeardropPinIconOptions, ThumbnailPinIcon, type ThumbnailPinIconOptions };

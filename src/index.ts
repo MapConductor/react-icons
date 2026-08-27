@@ -5,3 +5,7 @@ export * from './RightTailInfoBubbleIcon';
 export * from './MapIconGlyph';
 export * from './CommonMapIcons';
 export * from './PinGlyphIcon';
+export * from './TeardropPinIcon';
+export * from './RoundedSquarePinIcon';
+export * from './ThumbnailPinIcon';
+export * from './PhotoCardPinIcon';
