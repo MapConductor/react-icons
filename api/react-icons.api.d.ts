@@ -277,4 +277,5 @@ declare class PhotoCardPinIcon extends AbstractMarkerIcon {
     private size;
 }
 
-export { CircleIcon, type CircleIconOptions, CommonMapIcons, FlagIcon, type FlagIconOptions, type MapIconGlyph, PhotoCardPinIcon, type PhotoCardPinIconOptions, PinGlyphIcon, type PinGlyphIconOptions, RightTailInfoBubbleIcon, type RightTailInfoBubbleIconOptions, RoundInfoBubbleIcon, type RoundInfoBubbleIconOptions, RoundedSquarePinIcon, type RoundedSquarePinIconOptions, TeardropPinIcon, type TeardropPinIconOptions, ThumbnailPinIcon, type ThumbnailPinIconOptions };
+export { CircleIcon, CommonMapIcons, FlagIcon, PhotoCardPinIcon, PinGlyphIcon, RightTailInfoBubbleIcon, RoundInfoBubbleIcon, RoundedSquarePinIcon, TeardropPinIcon, ThumbnailPinIcon };
+export type { CircleIconOptions, FlagIconOptions, MapIconGlyph, PhotoCardPinIconOptions, PinGlyphIconOptions, RightTailInfoBubbleIconOptions, RoundInfoBubbleIconOptions, RoundedSquarePinIconOptions, TeardropPinIconOptions, ThumbnailPinIconOptions };
