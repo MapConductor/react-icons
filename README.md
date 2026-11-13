@@ -4,6 +4,12 @@ Map-ready React icon containers and region-neutral glyphs. Use them for applicat
 
 Locale never changes an icon automatically. Choose a regional pack explicitly when local conventions matter.
 
+## Demo
+
+[![Marker icons from this package on a map](https://raw.githubusercontent.com/MapConductor/react-icons/main/docs/images/demo.jpg)](https://demo-react.mapconductor.com/maplibre/marker/en)
+
+The [live demo](https://demo-react.mapconductor.com/maplibre/marker/en) shows this package's pin, circle, flag, thumbnail and info-bubble icons as markers. The provider can be switched at the top of the page.
+
 ## Installation
 
 Install the current stable package:
